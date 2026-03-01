@@ -1,6 +1,6 @@
 // script.js
 
-// ---------- Mobile menu ----------
+// --------- Mobile menu ----------
 const menuBtn = document.querySelector(".menu-btn");
 const navList = document.querySelector("nav ul");
 
@@ -9,29 +9,31 @@ if (menuBtn && navList) {
     navList.classList.toggle("open");
   });
 
-  // Close menu after clicking any link (mobile)
+  // Close menu ONLY when a normal link is clicked (not Services toggle)
   navList.querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", () => {
-      navList.classList.remove("open");
+      if (!a.classList.contains("dropbtn")) {
+        navList.classList.remove("open");
+      }
     });
   });
 }
 
-// ---------- Dropdown (Services) ----------
+// --------- Dropdown (Services) ----------
 const dropdown = document.querySelector(".dropdown");
 const dropBtn = document.querySelector(".dropbtn");
 
 if (dropdown && dropBtn) {
-  // Toggle dropdown on click (mainly for mobile, but works everywhere)
   dropBtn.addEventListener("click", (e) => {
-    e.preventDefault(); // because dropbtn uses href="#"
+    // Prevent '#' navigation + keep menu open
+    e.preventDefault();
     dropdown.classList.toggle("open");
 
     const expanded = dropdown.classList.contains("open");
     dropBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
   });
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (desktop)
   document.addEventListener("click", (e) => {
     if (!dropdown.contains(e.target)) {
       dropdown.classList.remove("open");
@@ -48,18 +50,13 @@ if (dropdown && dropBtn) {
   });
 }
 
-// ---------- Active link highlight ----------
+// --------- Active link highlight ----------
 const currentFile = window.location.pathname.split("/").pop() || "index.html";
-
 document.querySelectorAll("nav a").forEach((a) => {
   const href = a.getAttribute("href");
-  if (href && href === currentFile) {
-    a.classList.add("active");
-  }
+  if (href && href === currentFile) a.classList.add("active");
 });
 
-// ---------- Footer year ----------
+// --------- Footer year ----------
 const yearEl = document.getElementById("year");
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
+if (yearEl) yearEl.textContent = new Date().getFullYear();
